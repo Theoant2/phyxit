@@ -239,7 +239,7 @@ qui décrit généralement comment une donnée doit être sérialiser / déséri
 Maintenant que nous avons décrit le procéder de sérialisation, il nous font indiquer au système
 que cette méthode éxiste (exemple côté serveur):
 
-```
+```java
 // Récupération du gestionnaire de sérialisation
 sensorManager.getSensorSerializationManager()
             // Récupération du protocol de communication via les réseau MQTT

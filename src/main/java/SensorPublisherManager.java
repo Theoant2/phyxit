@@ -72,6 +72,8 @@ public class SensorPublisherManager {
         }
     }
 
+    public SensorSerializationManager getSensorSerializationManager() { return sensorSerializationManager; }
+
     private byte[] concatByteArrays(byte[] array1, byte[] array2) {
         byte[] result = new byte[array1.length + array2.length];
         System.arraycopy(array1, 0, result, 0, array1.length);

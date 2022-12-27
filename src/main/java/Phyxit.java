@@ -4,6 +4,7 @@ import models.providers.APrimitiveMQTTSensorProvider;
 import models.providers.json.CatFactJsonClientSensorProvider;
 import models.publishers.ISensorPublisher;
 import serialization.SensorSerializationManager;
+import serialization.mqtt.MQTTSensorSerializationProtocol;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -27,15 +28,6 @@ public class Phyxit {
         sensorManager.createSensor(catFactSensor);
 
         sensorManager.enableMQTTSensorDiscovery(MASTER_TOPIC);
-//
-//        SensorBuilder.Server<Double> temperatureSensor = ServerSensor.builder()
-//                .name("Bedroom Temperature Sensor")
-//                .location(SensorLocation.simple("Bedroom"))
-//                .frequency(ASensorFrequency.simple(TimeUnit.SECONDS, 2))
-//                .dataType(ISensorDataType.MQTT_DOUBLE)
-//                .provider(new APrimitiveMQTTSensorProvider.Double("tcp://localhost:1883"));
-//
-//        sensorManager.createSensor(temperatureSensor);
 
     }
 

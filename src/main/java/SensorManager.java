@@ -48,6 +48,8 @@ public class SensorManager {
         storageSpace.remove(getByName(sensorName));
     }
 
+    public SensorSerializationManager getSensorSerializationManager() { return sensorSerializationManager; }
+
     public ServerSensor<?> getByUUID(UUID sensorUUID) { return storageSpace.getUnique(sensorUUID); }
     public ServerSensor<?> getByName(String sensorName) { return storageSpace.getUnique(sensorName); }
 

@@ -1,0 +1,46 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '7.0.0'
+    id 'java'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation 'commons-io:commons-io:2.11.0'
+    implementation 'org.json:json:20180130'
+}
+
+apply plugin : "java"
+ext {
+    javaMainClass = "Phyxit"
+}
+
+application {
+    getMainClass().set(javaMainClass)
+}
+
+tasks.assemble {
+    dependsOn(shadowJar)
+}
+
+// Rename generated jar
+shadowJar {
+    archiveBaseName.set('PhyxitLib')
+    archiveClassifier.set('')
+}
+
+if (project.hasProperty('buildDirOutput')) {
+    task copyJarToOutputDir(type: Copy) {
+        from shadowJar // shortcut for createJar.outputs.files
+        into buildDirOutput
+    }
+    shadowJar.finalizedBy(copyJarToOutputDir)
+}

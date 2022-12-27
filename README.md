@@ -44,6 +44,11 @@ Phyxit supporte de la généricité à tous les étages:
     Un publisher (uniquement côté client) est un objet qui va permettre à un capteur de publier ses informations.
     Par défaut, les implémentations fournissent des publishers pour les capteurs communiquant par MQTT.
 
+- Sérialisation
+  
+    Un capteur peut communiquer sa description sur les canaux de communication.
+    Les différents procédés de sérialisation pour tous les attrbiuts d'un capteur sont aussi génériques.
+
 ## Création d'un capteur connu
 
 La librairie Phyxit fonctionne sur les deux fronts, client et serveur. La seule différence

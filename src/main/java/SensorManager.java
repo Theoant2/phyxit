@@ -4,6 +4,7 @@ import models.providers.SensorProviderProtocol;
 import org.eclipse.paho.client.mqttv3.*;
 import serialization.mqtt.MessageType;
 import serialization.SensorSerializationManager;
+import sets.SensorSet;
 import storage.StorageModes;
 import storage.StorageSpace;
 
@@ -53,16 +54,16 @@ public class SensorManager {
     public ServerSensor<?> getByUUID(UUID sensorUUID) { return storageSpace.getUnique(sensorUUID); }
     public ServerSensor<?> getByName(String sensorName) { return storageSpace.getUnique(sensorName); }
 
-    public <T> Set<ServerSensor<T>> getByDataType(ISensorDataType<T> sensorDataType) {
+    public <T> SensorSet<T> getByDataType(ISensorDataType<T> sensorDataType) {
         Set<ServerSensor<?>> sensors = storageSpace.get(sensorDataType);
-        return sensors.stream().map(sensor -> (ServerSensor<T>) sensor)
-                .collect(Collectors.toSet());
+        return new SensorSet<>(sensors.stream().map(sensor -> (ServerSensor<T>) sensor)
+                .collect(Collectors.toSet()));
     }
 
-    public <T> Set<ServerSensor<T>> getByDataType(Class<T> sensorDataType) {
+    public <T> SensorSet<T> getByDataType(Class<T> sensorDataType) {
         Set<ServerSensor<?>> sensors = storageSpace.get(sensorDataType);
-        return sensors.stream().map(sensor -> (ServerSensor<T>) sensor)
-                .collect(Collectors.toSet());
+        return new SensorSet<>(sensors.stream().map(sensor -> (ServerSensor<T>) sensor)
+                .collect(Collectors.toSet()));
     }
 
     public Set<ServerSensor<?>> getByLoc(SensorLocation sensorLoc) { return storageSpace.get(sensorLoc); }

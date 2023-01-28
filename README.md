@@ -7,6 +7,8 @@ Phyxit a été créé pour faciliter la centralisation des données pouvant prov
 capteurs, communiquant chaqu'un à l'aide d'un protocol particulier. Par exemple, il devient
 plus simple de recevoir des données de capteurs issue d'un réseau de type Broker
 (avec une découverte de ces derniers automatique) et des capteurs communiquant via des API REST.
+L'outil offre aussi la possibilité de déployer sa propre API Rest afin d'effectuer des operations sur
+les capteurs enregistrés ou découvert.
 
 Phyxit supporte de la généricité à tous les étages:
 
@@ -356,5 +358,54 @@ public class PhyxitTemperatureSensorClient {
 
 
 }
+```
+
+## Utilisation de l'API Rest interne
+
+Phyxit offre une API Rest interne à l'aide d'un serveur HTTP. A travers cette API, un utilisateur
+(aucune authentification n'a était implémentée pour le moment) va pouvoir effectuer des opérations
+sur les capteurs enregistrés ou découverts.
+
+Pour mieux comprendre les opérations, merci de vous référer à la section associée [ici]().
+
+Côté implémentation, vous pourrez créer un serveur HTTP à travers le ``SensorManager``
+(donc une implémentation faite uniquement côté ``serveur``).
+
+```java
+public class PhyxitServer {
+
+    private static SensorManager sensorManager;
+
+    public static void main(String[] args) {
+
+      // ...
+
+      // Accessible sur http://localhost:27078/
+      HTTPRestServer httpRestServer = sensorManager.createRestAPIServer("localhost", 27078);
+      httpRestServer.start();
+      
+      // ...
+
+    }
+    
+}
+```
+
+Pour le moment, seulement un accès aux ``SensorSets`` a été développé.
+Rendez-vous donc sur ``http://localhost:27078/sets``.
+
+Vous trouverez dans le tableau ci-dessous les valeurs acceptables des arguments ``GET`` (seule méthode implémentée pour l'instant).
+
+| Arguments     | Valeurs possibles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| ``action``    | Action à effectuer sur un ensemble de capteur.<br /><br /> ``operation``: seule cette valeur a été implémenté. Elle vous permettra de spécifier les arguments suivants dans ce tableau pour effectuer des opérations arithmétiques sur un ensemble de capteur.                                                                                                                                                                                                                                              |
+| ``operation`` | Opération à effectuer sur un ensemble de capteur.<br /><br /> ``sum``: fais la somme de toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``average``: fais la moyenne de toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``max``: retour la valeur maximale parmis toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``min``: retour la valeur minimale parmis toutes les dernières valeurs reçus par l'ensemble de capteurs. |
+| ``type``      | Permet de savoir sur quel type de capteur faire certaines actions.<br /><br /> ``double``: référence tout les capteurs renvoyant des données de type ``Double``<br /><br /> ``float``: référence tout les capteurs renvoyant des données de type ``Float``<br /><br /> ``integer``: référence tout les capteurs renvoyant des données de type ``Integer``<br /><br /> ``long``: référence tout les capteurs renvoyant des données de type ``Long``                                                          |
+
+Exemple:
+
+Effctuer la somme de toutes les dernières valeurs reçues de capteurs renvoyant des données de type ``Double``: 
+```
+http://localhost:27078/sets?action=operation&operation=sum&type=double
 ```
 

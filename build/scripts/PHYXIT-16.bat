@@ -67,7 +67,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\PHYXIT-16-1.0-SNAPSHOT.jar
+set CLASSPATH=%APP_HOME%\lib\PHYXIT-16-1.0-SNAPSHOT.jar;%APP_HOME%\lib\org.eclipse.paho.client.mqttv3-1.2.0.jar;%APP_HOME%\lib\commons-lang3-3.12.0.jar;%APP_HOME%\lib\commons-io-2.11.0.jar;%APP_HOME%\lib\json-20180130.jar
 
 
 @rem Execute PHYXIT-16

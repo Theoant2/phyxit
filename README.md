@@ -366,7 +366,7 @@ Phyxit offre une API Rest interne à l'aide d'un serveur HTTP. A travers cette A
 (aucune authentification n'a était implémentée pour le moment) va pouvoir effectuer des opérations
 sur les capteurs enregistrés ou découverts.
 
-Pour mieux comprendre les opérations, merci de vous référer à la section associée [ici]().
+Pour mieux comprendre les opérations, merci de vous référer à la section associée [ici](#ensemble-de-capteurs-et-oprations).
 
 Côté implémentation, vous pourrez créer un serveur HTTP à travers le ``SensorManager``
 (donc une implémentation faite uniquement côté ``serveur``).
@@ -409,3 +409,40 @@ Effctuer la somme de toutes les dernières valeurs reçues de capteurs renvoyant
 http://localhost:27078/sets?action=operation&operation=sum&type=double
 ```
 
+## Ensemble de capteurs et opérations
+
+Comme décrit dans la partie [Storage Spaces](#storage-spaces), le ``SensorManager`` permet de récupérer
+des ensembles de capteurs. Ces ensembles seront retournés sous formes de collection ``Set`` si
+tout les capteurs présent dans cette collection ne renvoyant pas le même type de donnée.
+
+Si cette dernière condition est vrai (notament à travers les méthodes ``SensorManager#getByDataType``),
+il sera retourné un ``SensorSet<T>`` sur lequels des opérations pourront être faites.
+
+La nature de ces opérations peut être étendue (par l'extension de ``ASensorSetOperation``),
+mais plusieurs opérations arithmétiques sont déjà implémentées et accessible via des méthodes utiles statiques dans ``ASensorSetOperation``:
+
+```java
+// Calcule la somme
+public static ReduceOperation<Double> sumDouble();
+public static ReduceOperation<Float> sumFloat();
+public static ReduceOperation<Integer> sumInteger();
+public static ReduceOperation<Long> sumLong();
+
+// Calcule la moyenne
+public static AverageOperation<Double> averageDouble();
+public static AverageOperation<Float> averageFloat();
+public static AverageOperation<Integer> averageInteger();
+public static AverageOperation<Long> averageLong();
+
+// Calcule la valeur maximale
+public static CollectionOperation<Double> maxDouble();
+public static CollectionOperation<Float> maxFloat();
+public static CollectionOperation<Integer> maxInteger();
+public static CollectionOperation<Long> maxLong();
+
+// Calcule la valeur minimale
+public static CollectionOperation<Double> minDouble();
+public static CollectionOperation<Float> minFloat();
+public static CollectionOperation<Integer> minInteger();
+public static CollectionOperation<Long> minLong();
+```

@@ -103,14 +103,12 @@ public class SensorSetHandler implements HttpHandler {
         JSONObject parameters;
 
         switch (requestMethod) {
-            case "POST": {
-                return;
-            }
             case "GET": {
                 parameters = parseQueryGET(exchange.getRequestURI().getQuery());
                 break;
             }
             default: {
+                // POST method has not been implemented yet
                 return;
             }
         }
@@ -118,8 +116,13 @@ public class SensorSetHandler implements HttpHandler {
         OutputStream outputStream = exchange.getResponseBody();
         InetSocketAddress remoteAddress = exchange.getRemoteAddress();
 
+        // For the moment, action can only be "operation".
         if (!parameters.has("action")) {
             sendError(exchange, "Action should be specified");
+            return;
+        }
+        if (!parameters.getString("action").equals("operation")) {
+            sendError(exchange, "The action 'operation' is the only one available for the moment.");
             return;
         }
         if (!parameters.has("operation")) {

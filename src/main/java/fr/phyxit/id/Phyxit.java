@@ -28,7 +28,7 @@ public class Phyxit {
 
         sensorManager.createSensor(catFactSensor);
 
-        HTTPRestServer httpRestServer = sensorManager.createRestAPIServer();
+        HTTPRestServer httpRestServer = sensorManager.createRestAPIServer("localhost", 27078);
         httpRestServer.start();
 
         sensorManager.enableMQTTSensorDiscovery(MASTER_TOPIC);

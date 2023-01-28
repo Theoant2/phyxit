@@ -78,8 +78,8 @@ public class SensorManager {
 
     public Set<ServerSensor<?>> getByMultipleAttributes(Object ... attributes) { return storageSpace.getInter(attributes); }
 
-    public HTTPRestServer createRestAPIServer() {
-        return new HTTPRestServer(this);
+    public HTTPRestServer createRestAPIServer(String address, int port) {
+        return new HTTPRestServer(this, address, port);
     }
 
     public void enableMQTTSensorDiscovery(String masterTopic) {

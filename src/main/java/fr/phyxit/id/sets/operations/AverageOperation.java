@@ -18,7 +18,7 @@ public class AverageOperation<T extends Number> extends ASensorSetOperation<T, T
 
     @Override
     public T perform(SensorSet<T> sensors) {
-        return divisor.apply(reduceOperation.perform(sensors), sensors.getSensors().size());
+        return divisor.apply(reduceOperation.perform(sensors), Math.max(1, sensors.getSensors().size()));
     }
 
 }

@@ -22,10 +22,10 @@ public abstract class ASensorSetOperation<T, R> {
     public abstract R perform(SensorSet<T> sensors);
 
 
-    public static ReduceOperation<Double> sumDouble() { return new ReduceOperation<>(Double.class, Double::sum); }
-    public static ReduceOperation<Float> sumFloat() { return new ReduceOperation<>(Float.class, Float::sum); }
-    public static ReduceOperation<Integer> sumInteger() { return new ReduceOperation<>(Integer.class, Integer::sum); }
-    public static ReduceOperation<Long> sumLong() { return new ReduceOperation<>(Long.class, Long::sum); }
+    public static ReduceOperation<Double> sumDouble() { return new ReduceOperation<>(Double.class, Double::sum, () -> 0.0d); }
+    public static ReduceOperation<Float> sumFloat() { return new ReduceOperation<>(Float.class, Float::sum, () -> 0.0f); }
+    public static ReduceOperation<Integer> sumInteger() { return new ReduceOperation<>(Integer.class, Integer::sum, () -> 0); }
+    public static ReduceOperation<Long> sumLong() { return new ReduceOperation<>(Long.class, Long::sum, () -> 0L); }
     public static <V> ReduceOperation<V> sum(Class<V> typeClass) {
         if (typeClass.equals(Double.class)) return (ReduceOperation<V>) sumDouble();
         if (typeClass.equals(Float.class)) return (ReduceOperation<V>) sumFloat();
@@ -52,10 +52,10 @@ public abstract class ASensorSetOperation<T, R> {
     }
 
 
-    public static CollectionOperation<Double> maxDouble() { return new CollectionOperation<>(Double.class, values -> values.stream().max(Double::compare).get()); }
-    public static CollectionOperation<Float> maxFloat() { return new CollectionOperation<>(Float.class, values -> values.stream().max(Float::compare).get()); }
-    public static CollectionOperation<Integer> maxInteger() { return new CollectionOperation<>(Integer.class, values -> values.stream().max(Integer::compare).get()); }
-    public static CollectionOperation<Long> maxLong() { return new CollectionOperation<>(Long.class, values -> values.stream().max(Long::compare).get()); }
+    public static CollectionOperation<Double> maxDouble() { return new CollectionOperation<>(Double.class, values -> values.stream().max(Double::compare).orElse(0.0d)); }
+    public static CollectionOperation<Float> maxFloat() { return new CollectionOperation<>(Float.class, values -> values.stream().max(Float::compare).orElse(0.0f)); }
+    public static CollectionOperation<Integer> maxInteger() { return new CollectionOperation<>(Integer.class, values -> values.stream().max(Integer::compare).orElse(0)); }
+    public static CollectionOperation<Long> maxLong() { return new CollectionOperation<>(Long.class, values -> values.stream().max(Long::compare).orElse(0L)); }
     public static <V> CollectionOperation<V> max(Class<V> typeClass) {
         if (typeClass.equals(Double.class)) return (CollectionOperation<V>) maxDouble();
         if (typeClass.equals(Float.class)) return (CollectionOperation<V>) maxFloat();
@@ -64,10 +64,10 @@ public abstract class ASensorSetOperation<T, R> {
         throw new IllegalArgumentException("Unknown type for this operation");
     }
 
-    public static CollectionOperation<Double> minDouble() { return new CollectionOperation<>(Double.class, values -> values.stream().min(Double::compare).get()); }
-    public static CollectionOperation<Float> minFloat() { return new CollectionOperation<>(Float.class, values -> values.stream().min(Float::compare).get()); }
-    public static CollectionOperation<Integer> minInteger() { return new CollectionOperation<>(Integer.class, values -> values.stream().min(Integer::compare).get()); }
-    public static CollectionOperation<Long> minLong() { return new CollectionOperation<>(Long.class, values -> values.stream().min(Long::compare).get()); }
+    public static CollectionOperation<Double> minDouble() { return new CollectionOperation<>(Double.class, values -> values.stream().min(Double::compare).orElse(0.0d)); }
+    public static CollectionOperation<Float> minFloat() { return new CollectionOperation<>(Float.class, values -> values.stream().min(Float::compare).orElse(0.0f)); }
+    public static CollectionOperation<Integer> minInteger() { return new CollectionOperation<>(Integer.class, values -> values.stream().min(Integer::compare).orElse(0)); }
+    public static CollectionOperation<Long> minLong() { return new CollectionOperation<>(Long.class, values -> values.stream().min(Long::compare).orElse(0L)); }
     public static <V> CollectionOperation<V> min(Class<V> typeClass) {
         if (typeClass.equals(Double.class)) return (CollectionOperation<V>) minDouble();
         if (typeClass.equals(Float.class)) return (CollectionOperation<V>) minFloat();

@@ -40,6 +40,7 @@ Phyxit supporte de la généricité à tous les étages:
     Un provider (uniquement côté serveur) est un objet qui va permettre au système de collecter
     les informations du capteur (côté client) publiées. Ainsi, les providers par défaut implémentés
     vous permettrons de créer des capteurs communiquant par MQTT ou par API REST.
+    **Attention** Vous pourrez utiliser par exemple [shiftr.io](https://www.shiftr.io/) pour simuler le serveur MQTT sur votre machine.
 
 - Publishers
 

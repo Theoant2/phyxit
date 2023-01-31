@@ -20,7 +20,7 @@ dependencies {
 
 apply plugin : "java"
 ext {
-    javaMainClass = "Phyxit"
+    javaMainClass = "fr.phyxit.id.Phyxit"
 }
 
 application {

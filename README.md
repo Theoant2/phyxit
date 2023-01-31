@@ -5,19 +5,19 @@ Manage sensors of different kinds from the same place
 
 Phyxit a été créé pour faciliter la centralisation des données pouvant provenir de différents
 capteurs, communiquant chaqu'un à l'aide d'un protocol particulier. Par exemple, il devient
-plus simple de recevoir des données de capteurs issue d'un réseau de type Broker
+plus simple de recevoir des données de capteurs issues d'un réseau de type Broker
 (avec une découverte de ces derniers automatique) et des capteurs communiquant via des API REST.
 L'outil offre aussi la possibilité de déployer sa propre API Rest afin d'effectuer des operations sur
-les capteurs enregistrés ou découvert.
+les capteurs enregistrés ou découverts.
 
 Phyxit supporte de la généricité à tous les étages:
 
-- Définition d'un capteurs
+- Définition d'un capteur
     
-    Les capteurs par défaut défini dans Phyxit peuvent être étendus et modifiés,
+    Les capteurs par défaut définis dans Phyxit peuvent être étendus et modifiés,
     pour par exemple pouvoir ajouter des attributs à ces derniers.
 
-- Position du capteurs
+- Position du capteur
 
     Par défaut, Phyxit n'implémente qu'un seul type de position (décrit par une chaîne de caractère),
     mais comme montré dans les exemples ci-dessous, il est possible de pousser la complexité plus loin,
@@ -27,7 +27,7 @@ Phyxit supporte de la généricité à tous les étages:
     
     Un capteur dans Phyxit peut vivre côté serveur et côté client. La version client va pouvoir
     publier et la version serveur va pouvoir recevoir. La définition des fréquences d'actualisation et
-    de publications sont très générique. Par défaut, une implémentation avec un timer est fournie.
+    de publication sont très génériques. Par défaut, une implémentation avec un timer est fournie.
 
 - Types de données
 
@@ -40,6 +40,7 @@ Phyxit supporte de la généricité à tous les étages:
     Un provider (uniquement côté serveur) est un objet qui va permettre au système de collecter
     les informations du capteur (côté client) publiées. Ainsi, les providers par défaut implémentés
     vous permettrons de créer des capteurs communiquant par MQTT ou par API REST.
+    **Attention** Vous pourrez utiliser par exemple [shiftr.io](https://www.shiftr.io/) pour simuler le serveur MQTT sur votre machine.
 
 - Publishers
 
@@ -56,7 +57,7 @@ Phyxit supporte de la généricité à tous les étages:
 La librairie Phyxit fonctionne sur les deux fronts, client et serveur. La seule différence
 résidera dans l'utilisation de cette dernière.
 Si l'on connait la position de notre capteur, et sa façon dont il va nous faire parvenir les données,
-on peut directement fournir au système sa description au lieu d'attendre que se dernier ne se manifeste (= enregistrement automatique).
+on peut directement fournir au système sa description au lieu d'attendre que ce dernier ne se manifeste (= enregistrement automatique).
 
 ### Serveur
 
@@ -129,7 +130,7 @@ public class PhyxitClient1 {
 
         System.out.println("Publishing ...");
 
-        // Et on évite que le thread principale ne meurt
+        // Et on évite que le thread principal ne meurt
         sensorPublisherManager.spin();
     }
 
@@ -171,7 +172,7 @@ public class GeographicSensorLocation implements SensorLocation {
 ```
 
 Cependant, étendre une nouvelle structure de donnée de ``SensorLocation`` ne suffit pas au
-système pour pouvoir fonctionner correctement. En effect, lorsqu'un capteur est sérialisé,
+système pour pouvoir fonctionner correctement. En effet, lorsqu'un capteur est sérialisé,
 l'information sur sa position l'est aussi. Il faut donc décrire au système comment procéder.
 
 Comme notre capteur communique via un réseau MQTT, tout est représenté par des octets.
@@ -241,9 +242,9 @@ public class GeographicSensorLocationSerializer extends AMQTTSerializableSensorD
 ```
 
 Si vous êtes curieux, un ``AMQTTSerializableSensorData<T>`` étends d'un ``ISerializableSensorData<T, E1, E2>``
-qui décrit généralement comment une donnée doit être sérialiser / désérialiser pour n'importe quel canal de communication.
+qui décrit généralement comment une donnée doit être sérialisé / désérialisé pour n'importe quel canal de communication.
 
-Maintenant que nous avons décrit le procéder de sérialisation, il nous font indiquer au système
+Maintenant que nous avons décrit le procédé de sérialisation, il nous font indiquer au système
 que cette méthode éxiste (exemple côté serveur):
 
 ```java
@@ -291,7 +292,7 @@ Par exemple, je veux récupérer le capteur qui s'appelle ``Bedroom Temperature 
 ServerSensor<?> serverSensor = sensorManager.getByName("Bedroom Temperature Sensor");
 ```
 
-Ou tous les capteurs qui se situe dans la chambre:
+Ou tous les capteurs qui se situent dans la chambre:
 
 ```java
 Set<ServerSensor<?>> sensors = sensorManager.getByLoc(SensorLocation.simple("Bedroom"));
@@ -363,7 +364,7 @@ public class PhyxitTemperatureSensorClient {
 ## Utilisation de l'API Rest interne
 
 Phyxit offre une API Rest interne à l'aide d'un serveur HTTP. A travers cette API, un utilisateur
-(aucune authentification n'a était implémentée pour le moment) va pouvoir effectuer des opérations
+(aucune authentification n'a été implémentée pour le moment) va pouvoir effectuer des opérations
 sur les capteurs enregistrés ou découverts.
 
 Pour mieux comprendre les opérations, merci de vous référer à la section associée [Ensemble de capteurs et operations](#ensemble-de-capteurs-et-operations).
@@ -398,9 +399,9 @@ Vous trouverez dans le tableau ci-dessous les valeurs acceptables des arguments 
 
 | Arguments     | Valeurs possibles                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 |---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| ``action``    | Action à effectuer sur un ensemble de capteur.<br /><br /> ``operation``: seule cette valeur a été implémenté. Elle vous permettra de spécifier les arguments suivants dans ce tableau pour effectuer des opérations arithmétiques sur un ensemble de capteur.                                                                                                                                                                                                                                              |
-| ``operation`` | Opération à effectuer sur un ensemble de capteur.<br /><br /> ``sum``: fais la somme de toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``average``: fais la moyenne de toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``max``: retour la valeur maximale parmis toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``min``: retour la valeur minimale parmis toutes les dernières valeurs reçus par l'ensemble de capteurs. |
-| ``type``      | Permet de savoir sur quel type de capteur faire certaines actions.<br /><br /> ``double``: référence tout les capteurs renvoyant des données de type ``Double``<br /><br /> ``float``: référence tout les capteurs renvoyant des données de type ``Float``<br /><br /> ``integer``: référence tout les capteurs renvoyant des données de type ``Integer``<br /><br /> ``long``: référence tout les capteurs renvoyant des données de type ``Long``                                                          |
+| ``action``    | Action à effectuer sur un ensemble de capteurs.<br /><br /> ``operation``: seule cette valeur a été implémentée. Elle vous permettra de spécifier les arguments suivants dans ce tableau pour effectuer des opérations arithmétiques sur un ensemble de capteurs.                                                                                                                                                                                                                                              |
+| ``operation`` | Opération à effectuer sur un ensemble de capteurs.<br /><br /> ``sum``: fait la somme de toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``average``: fait la moyenne de toutes les dernières valeurs reçus par l'ensemble de capteurs.<br /><br /> ``max``: retourne la valeur maximale parmi toutes les dernières valeurs reçues par l'ensemble de capteurs.<br /><br /> ``min``: retourne la valeur minimale parmi toutes les dernières valeurs reçues par l'ensemble de capteurs. |
+| ``type``      | Permet de savoir sur quel type de capteur faire certaines actions.<br /><br /> ``double``: référence tous les capteurs renvoyant des données de type ``Double``<br /><br /> ``float``: référence tous les capteurs renvoyant des données de type ``Float``<br /><br /> ``integer``: référence tous les capteurs renvoyant des données de type ``Integer``<br /><br /> ``long``: référence tous les capteurs renvoyant des données de type ``Long``                                                          |
 
 Exemple:
 
@@ -412,14 +413,14 @@ http://localhost:27078/sets?action=operation&operation=sum&type=double
 ## Ensemble de capteurs et operations
 
 Comme décrit dans la partie [Storage Spaces](#storage-spaces), le ``SensorManager`` permet de récupérer
-des ensembles de capteurs. Ces ensembles seront retournés sous formes de collection ``Set`` si
-tout les capteurs présent dans cette collection ne renvoyant pas le même type de donnée.
+des ensembles de capteurs. Ces ensembles seront retournés sous forme de collection ``Set`` si
+tous les capteurs présent dans cette collection ne renvoyant pas le même type de donnée.
 
-Si cette dernière condition est vrai (notament à travers les méthodes ``SensorManager#getByDataType``),
+Si cette dernière condition est vraie (notamment à travers les méthodes ``SensorManager#getByDataType``),
 il sera retourné un ``SensorSet<T>`` sur lequels des opérations pourront être faites.
 
 La nature de ces opérations peut être étendue (par l'extension de ``ASensorSetOperation``),
-mais plusieurs opérations arithmétiques sont déjà implémentées et accessible via des méthodes utiles statiques dans ``ASensorSetOperation``:
+mais plusieurs opérations arithmétiques sont déjà implémentées et accessibles via des méthodes utiles statiques dans ``ASensorSetOperation``:
 
 ```java
 // Calcule la somme
@@ -449,7 +450,7 @@ public static CollectionOperation<Long> minLong();
 
 Exemple:
 
-Calcule la somme de toutes les valeurs dernièrement reçue sur l'ensemble de capteurs renvoyant des données de type ``Double``.
+Calcule la somme de toutes les valeurs dernièrement reçues sur l'ensemble de capteurs renvoyant des données de type ``Double``.
 
 ```java
 SensorSet<Double> sensors = sensorManager.getByDataType(Double.class);
